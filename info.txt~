@@ -1,0 +1,21 @@
+Dans l'air, une différence de 1 milliseconde équivaut environ à 33 cm pour c=333 m/s
+
+Scipy et numpy devrait suffir pour le travail, je pense souhaitable de ne pas utilisé pyaudio (alourdi le programme).
+
+On peut utiliser le code suivant pour calculer une durée 
+start = time.time() 
+	mon code à chronométré
+duration = time.time()-start # en seconde
+
+Page sur les calcul de chirp http://fr.wikipedia.org/wiki/Compression_d%27impulsion
+
+J'ai installé pyalsaaudio pour atteindre le microphone, les premiers test ne fonctionnaient pas car le volume du micro était trop faible.
+Documentation pyalsa http://pyalsaaudio.sourceforge.net/
+
+D'après la doc du raspberry, les bonne carte son peuvent mal fonctionnées. Il est recommandé de travailler en 44.1hz à 16-bits cf ci dessous
+http://www.raspberrypi.org/documentation/hardware/raspberrypi/usb.md
+3. Esoteric USB sound cards
+Expensive "audiophile" sound cards typically use far more bandwidth than is necessary to stream audio playback. Reliable operation with 96kHz/192kHz DACs is not guaranteed.
+As a workaround, forcing the output stream to be CD quality (44.1kHz/48kHz 16-bit) will reduce the stream bandwidth to reliable levels.
+
+
