@@ -10,18 +10,18 @@ time_base4_true=np.arange(0,4,1.0/2000)#ne pas oublier que 1/44100=0
 
 #chirp220to3520=np.array([])
 chirp220to440=np.array([]) #creation du chirp vide
-chirpto440_decal=np.zeros(time_base4.size)
+chirpto440_decal=np.zeros(time_base4_true.size)
 i=0
 for t in np.nditer(time_base): #boucle for sur un array
 	#chirp220to3520=np.concatenate((chirp220to3520,np.array([chirp(t,220,1,3520)])))
 	chirp220to440=np.concatenate((chirp220to440,np.array([chirp(t,220,1,440)])))
-	chirpto440_decal[6000+i]=chirp(t,220,1,440) #tu mexplique a quoi correspond 132300
+	chirpto440_decal[4000+i]=chirp(t,220,1,440) 
 	i=i+1
 
 #plt.plot(time_base,chirp220to440)
 #plt.plot(time_base4,chirpto440_decal)
 
-noise=5*np.random.rand(chirpto440_decal.size)
+noise=3*np.random.rand(chirpto440_decal.size)
 realSound=noise+chirpto440_decal
 
 norm_chirp220to440=math.sqrt((chirp220to440*chirp220to440).sum())
@@ -29,20 +29,21 @@ norm_chirp220to440=math.sqrt((chirp220to440*chirp220to440).sum())
 cor=np.zeros(time_base4_true.size)
 
 
+#start=time.time()
+#
+#for i in range(8000):
+#	norm_y=(realSound[i:2000+i]*realSound[i:2000+i]).sum()+1
+#	norm_y=math.sqrt(norm_y)
+#	cor[i]=(chirp220to440*realSound[i:2000+i]).sum()/(norm_y*norm_chirp220to440)
+#
+#duration=time.time()-start 
+
 start=time.time()
-
-
-for i in range(8000):
-	norm_y=(realSound[i:2000+i]*realSound[i:2000+i]).sum()+1
-	norm_y=math.sqrt(norm_y)
-	cor[i]=(chirp220to440*realSound[i:2000+i]).sum()/(norm_y*norm_chirp220to440)
-
+corr=np.correlate(realSound,chirp220to440,'same')
 duration=time.time()-start 
-
-
 #print cor.size
 #print time_base4_true.size
-plt.plot(time_base4_true,cor)
+plt.plot(corr)
 print duration
 plt.show()
  

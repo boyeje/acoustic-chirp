@@ -33,6 +33,6 @@ while True:
     l,data = inp.read()
     if l:
     	# Return the maximum of the absolute value of all samples in a fragment.
-    	#print audioop.max(data, 2)
-        print l
+    	print audioop.max(data, 2)
+        
     time.sleep(.001)

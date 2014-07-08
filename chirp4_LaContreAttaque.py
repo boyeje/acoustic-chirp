@@ -3,9 +3,9 @@ import time
 import math
 import matplotlib.pyplot as plt #ralenti fortement le script
 from scipy.signal import * #permet l'utilisation de scipy.signal.chirp(t, f0=0, t1=1, f1=100, method='linear', phi=0, qshape=None)
-time_base=np.arange(0,1,1.0/2000)
-time_base4=np.arange(-1,4,1.0/2000)# 2000hz echantillonage
-time_base4_true=np.arange(0,4,1.0/2000)#ne pas oublier que 1/44100=0 
+time_base=np.arange(0,1,1.0/22500)
+time_base4=np.arange(-1,4,1.0/22500)# 2000hz echantillonage
+time_base4_true=np.arange(0,4,1.0/22500)#ne pas oublier que 1/44100=0 
 
 
 #chirp220to3520=np.array([])
@@ -14,14 +14,14 @@ chirpto440_decal=np.zeros(time_base4_true.size)
 i=0
 for t in np.nditer(time_base): #boucle for sur un array
 	#chirp220to3520=np.concatenate((chirp220to3520,np.array([chirp(t,220,1,3520)])))
-	chirp220to440=np.concatenate((chirp220to440,np.array([chirp(t,220,1,440)])))
-	chirpto440_decal[4000+i]=chirp(t,220,1,440) 
+	chirp220to440=np.concatenate((chirp220to440,np.array([chirp(t,2000,0.01,10000)])))
+	chirpto440_decal[44100+i]=chirp(t,2000,0.01,10000) 
 	i=i+1
 
 #plt.plot(time_base,chirp220to440)
 #plt.plot(time_base4,chirpto440_decal)
 
-noise=3*np.random.rand(chirpto440_decal.size)
+noise=2*np.random.rand(chirpto440_decal.size)
 realSound=noise+chirpto440_decal
 
 norm_chirp220to440=math.sqrt((chirp220to440*chirp220to440).sum())
@@ -39,7 +39,7 @@ cor=np.zeros(time_base4_true.size)
 #duration=time.time()-start 
 
 start=time.time()
-corr=np.correlate(chirpto440_decal,chirp220to440,'same')
+corr=np.correlate(realSound,chirp220to440,'same')
 duration=time.time()-start 
 #print cor.size
 #print time_base4_true.size
